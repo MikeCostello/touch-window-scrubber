@@ -99,6 +99,7 @@ handle = document.createElement("div");
 handle.addEventListener("touchmove", handleMove, false);
 handle.addEventListener("touchend", handleEnd, false);
 handle.classList.add(className);
+
 handle = body.appendChild(handle);
 
 })();
