@@ -19,9 +19,7 @@ Author: Michael Costello (michael.a.costello@gmail.com)
 (function() {
 
 var className = "touch-window-scrubber-handle";
-var documentHeight =  Math.max(document.documentElement.clientHeight, window.innerHeight);
-var bodyHeight = document.body.clientHeight;
-var handle, timerFade, timerMove;
+var documentHeight, bodyHeight, handle, timerFade, timerMove;
 
 function fadeHandle(opacity, timeout) {
 	clearTimeout(timerFade);
@@ -32,6 +30,11 @@ function fadeHandle(opacity, timeout) {
 
 function docTouch(event) {
 	var scrollTop = document.body.scrollTop;
+
+	if (event.type === "touchstart") {
+		documentHeight =  Math.max(document.documentElement.clientHeight, window.innerHeight);
+		bodyHeight = document.body.clientHeight;
+	}
 
 	if (scrollTop < 10) {
 		handle.style.opacity = 0;
