@@ -17,6 +17,27 @@
 		background: -o-linear-gradient(#1e5799 0%, #c7e5fc 100%);
 		background: linear-gradient(#1e5799 0%, #c7e5fc 100%);
 	}
+
+	body:before {
+		top: 20px;
+		content: "Top";
+		position: absolute;
+		text-align: center;
+		width: 100%;
+		color: #c7e5fc;
+		font-size: 2em;
+	}
+
+	body:after {
+		top: 1950px;
+		content: "Bottom";
+		position: absolute;
+		text-align: center;
+		width: 100%;
+		color: #1e5799;
+		font-size: 2em;
+	}
+
 	</style>
 </head>
 <body>
