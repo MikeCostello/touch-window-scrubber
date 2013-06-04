@@ -37,6 +37,7 @@ function docTouch(event) {
 		handle.style.opacity = 0;
 	} else if (event.type === "touchend") {
 		handle.style.opacity = 0.5;
+		fadeHandle(0, 1200);
 	}
 }
 
@@ -63,7 +64,7 @@ function handleMove(event) {
 
 function handleEnd(event) {
 	event.cancelBubble = true;
-	fadeHandle(0, 1000);
+	fadeHandle(0, 1200);
 }
 
 document.addEventListener("touchstart", docTouch, false);

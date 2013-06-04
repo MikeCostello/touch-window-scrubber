@@ -21,9 +21,9 @@
 	background: -o-linear-gradient(#d7d7d7 0%, #808080 100%);
 	background: linear-gradient(#d7d7d7 0%, #808080 100%);
 
-	-webkit-transition: opacity .2s ease-in-out;
-	-moz-transition: opactiy .2s ease-in-out;
-	-ms-transition: opacity .2s ease-in-out;
-	-o-transition: opacity .2s ease-in-out;
-	transition: opacity .2s ease-in-out;
+	-webkit-transition: opacity .3s ease-in-out;
+	-moz-transition: opactiy .3s ease-in-out;
+	-ms-transition: opacity .3s ease-in-out;
+	-o-transition: opacity .3s ease-in-out;
+	transition: opacity .3s ease-in-out;
 }
