@@ -19,7 +19,10 @@ Author: Michael Costello (michael.a.costello@gmail.com)
 (function() {
 
 var className = "touch-window-scrubber-handle";
-var documentHeight, bodyHeight, handle, timerFade, timerMove;
+var win = window;
+var docElm = document.documentElement;
+var body = document.body;
+var viewportHeight, documentHeight, handle, timerFade, timerMove;
 
 function fadeHandle(opacity, timeout) {
 	clearTimeout(timerFade);
@@ -28,12 +31,30 @@ function fadeHandle(opacity, timeout) {
 	}, timeout);
 }
 
-function docTouch(event) {
-	var scrollTop = document.body.scrollTop;
+function getDocumentHeight() {
+	return Math.max(
+		body.scrollHeight, docElm.scrollHeight,
+		body.offsetHeight, docElm.offsetHeight,
+		docElm.clientHeight
+	);
+}
 
+// @see https://github.com/ryanve/response.js/issues/17
+function getViewportHeight() {
+	var mM = win.matchMedia || win.msMatchMedia;
+	var client = docElm["clientHeight"];
+	var inner = win["innerHeight"];
+
+	return ( mM && client < inner && true === mM("(min-height:" + inner + "px)")["matches"] ? inner : client );
+}
+
+function docTouch(event) {
+	var scrollTop = body.scrollTop;
+
+	// refresh cached heights
 	if (event.type === "touchstart") {
-		documentHeight =  Math.max(document.documentElement.clientHeight, window.innerHeight);
-		bodyHeight = document.body.clientHeight;
+		viewportHeight = getViewportHeight();
+		documentHeight = getDocumentHeight();
 	}
 
 	if (scrollTop < 10) {
@@ -45,28 +66,28 @@ function docTouch(event) {
 }
 
 function docMove(event) {
-	var scrollTop = document.body.scrollTop;
+	var scrollTop = body.scrollTop;
 
 	handle.style.opacity = 0;
 	clearTimeout(timerMove);
 	timerMove = setTimeout(function() {
-		handle.style.top = parseInt((scrollTop / bodyHeight) * documentHeight, 10) + "px";
+		handle.style.top = parseInt((scrollTop / documentHeight) * viewportHeight, 10) + "px";
 	});
 }
 
 function handleMove(event) {
 	var clientY = event.targetTouches[0].clientY;
-	var percent = Math.max(Math.min(clientY / documentHeight, 1), 0);
-	var handleY = Math.min(parseInt(percent * documentHeight, 10), documentHeight);
-	var scrollToY = parseInt(percent * bodyHeight, 10);
+	var percent = Math.max(Math.min(clientY / viewportHeight, 1), 0);
+	var handleY = Math.min(parseInt(percent * viewportHeight, 10), viewportHeight);
+	var scrollToY = parseInt(percent * documentHeight, 10);
 
-	event.cancelBubble = true;
+	event.stopPropagation();
 	handle.style.top = handleY + "px";
-	window.scrollTo(0, scrollToY);
+	win.scrollTo(0, scrollToY);
 }
 
 function handleEnd(event) {
-	event.cancelBubble = true;
+	event.stopPropagation();
 	fadeHandle(0, 1200);
 }
 
@@ -78,6 +99,6 @@ handle = document.createElement("div");
 handle.addEventListener("touchmove", handleMove, false);
 handle.addEventListener("touchend", handleEnd, false);
 handle.classList.add(className);
-handle = document.body.appendChild(handle);
+handle = body.appendChild(handle);
 
 })();
